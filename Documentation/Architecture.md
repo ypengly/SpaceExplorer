@@ -1,0 +1,7 @@
+# Architecture notes
+- **Determinism**: `USEGalaxySubsystem::BuildSystem(index)` derives everything from `(GalaxySeed, index)`. Terrain derives from `FSEPlanetData::Seed` through `SETerrain::Height` (pure, thread-safe). Populator content derives from `(planet seed, chunk)`. Nothing procedural is stored in saves except what the player changed (depleted deposits, built structures).
+- **Streaming**: `ASETerrainStreamer` keeps a square of pooled chunks around the player, three LODs with skirts, collision only near the player, async mesh building with a generation counter that discards stale results, and a per-frame start budget. `ASEPopulator` fills and clears gameplay content per chunk, one chunk per frame.
+- **Distance-based AI**: `ASEWalker` throttles its tick (0.15 s beyond 80 m, 0.5 s beyond 200 m) and freezes simulation beyond 250 m. Foliage uses instanced meshes (one draw call per kind per chunk).
+- **State**: `USEProgression` is the single owner of persistent progress; `FSEProgressSave` is saved as one block. Level reloads (travel, cross-planet loads) keep player and ship state through a transit snapshot in `USESaveSubsystem`.
+- **UI**: `ASEPlayerController` owns UI state and every action; `ASEHUD` draws screens and registers clickable rectangles each frame. No button exists without a backing action.
+- **Ship**: gravity fades with altitude, top speed rises in space, flight assist eases velocity toward the commanded velocity.

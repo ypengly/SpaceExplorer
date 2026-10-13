@@ -1,0 +1,12 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.4",
+  "Category": "Game",
+  "Description": "Space Explorer - open-world procedural galaxy adventure",
+  "Modules": [
+    { "Name": "SpaceExplorer", "Type": "Runtime", "LoadingPhase": "Default" }
+  ],
+  "Plugins": [
+    { "Name": "ProceduralMeshComponent", "Enabled": true }
+  ]
+}
